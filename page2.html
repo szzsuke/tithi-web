@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #fbeae6, #fff3e2);
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+  color: #5a3e36;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5em;
+  color: #d47b7b;
+  margin-bottom: 10px;
+}
+p {
+  font-size: 1.1em;
+  color: #654f46;
+  margin-bottom: 10px;
+}
+.music-card {
+  background: #fffdf8;
+  border-radius: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  width: 330px;
+  padding: 15px;
+  transition: transform 0.3s ease;
+}
+.music-card:hover { transform: scale(1.03); }
+.album-cover {
+  width: 100%;
+  height: 330px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.spotify-controls button {
+  background-color: #f6c2c2;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 20px;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: background 0.3s;
+}
+.spotify-controls button:hover { background-color: #e29d9d; }
+.writing-area {
+  width: 90%;
+  max-width: 600px;
+  min-height: 200px;
+  background: #fff9f4;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: left;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font-size: 1.1em;
+  color: #5a3e36;
+}
+.next-btn {
+  background-color: #f6c2c2;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 25px;
+  font-size: 1.1em;
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: background 0.3s;
+}
+.next-btn:hover { background-color: #e29d9d; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>This Song is for You 💞</h1>
+<p>Every beat of this song reminds me of you — your smile, your laughter, your heart.  
+Play this and feel what I feel. 🎧💗</p>
+
+<div class="music-card">
+  <img src="album-cover.jpg" alt="Album Cover" class="album-cover">
+  <div class="spotify-controls">
+    <button id="login-btn">Login with Spotify</button>
+    <button id="play-btn" disabled>Play</button>
+    <button id="pause-btn" disabled>Pause</button>
+  </div>
+</div>
+
+<p>Write something for me 💌</p>
+<div class="writing-area">You can write your message here...</div>
+
+<button class="next-btn" onclick="goNext()">Next ➜</button>
+</div>
+
+<script src="https://sdk.scdn.co/spotify-player.js"></script>
+<script>
+const client_id = '2b8085a5237f4a58a17250270df7161a';
+const redirect_uri = 'http://127.0.0.1:5500/MyCsharpprojects/tithi/page2.html';
+const scopes = 'streaming user-read-email user-read-private';
+let token = null;
+let player, device_id;
+
+// Check if token exists in URL hash
+const hash = window.location.hash.substring(1);
+if (hash) {
+  const params = new URLSearchParams(hash);
+  token = params.get('access_token');
+  // Remove hash from URL
+  window.history.replaceState({}, document.title, window.location.pathname);
+}
+
+// Login button
+document.getElementById('login-btn').onclick = () => {
+  const url = `https://accounts.spotify.com/authorize?response_type=token&client_id=${client_id}&scope=${encodeURIComponent(scopes)}&redirect_uri=${encodeURIComponent(redirect_uri)}`;
+  window.location.href = url;
+};
+
+// Initialize Spotify SDK if token exists
+if (token) {
+  document.getElementById('login-btn').style.display = 'none'; // hide login button
+
+  window.onSpotifyWebPlaybackSDKReady = () => {
+    player = new Spotify.Player({
+      name: 'For You 💖 Player',
+      getOAuthToken: cb => { cb(token); },
+      volume: 0.8
+    });
+
+    player.addListener('ready', ({ device_id: id }) => {
+      device_id = id;
+      document.getElementById('play-btn').disabled = false;
+      document.getElementById('pause-btn').disabled = false;
+
+      // Auto-start playback
+      fetch(`https://api.spotify.com/v1/me/player/play?device_id=${device_id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ uris: ['spotify:track:4uLU6hMCjMI75M1A2tKUQC'] }),
+        headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' }
+      });
+    });
+
+    player.connect();
+  };
+
+  // Play/pause buttons
+  document.getElementById('play-btn').onclick = () => { player.resume(); };
+  document.getElementById('pause-btn').onclick = () => { player.pause(); };
+}
+
+function goNext() { window.location.href = "page3.html"; }
+</script>
+</body>
+</html>

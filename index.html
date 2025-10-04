@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Astra Line</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="card">
+    <p class="invite"></p>
+    <h1>I Love You</h1>
+    <h2>Meri kuchupuchu</h2>
+    <p class="details">You and Me Always forever</p>
+
+    <!-- 📸 Image acts as a button -->
+    <div class="photo-frame" onclick="goNext()">
+      <img src="yourphoto.jpg" alt="Memory Photo">
+      <div class="caption">you are my everything</div>
+    </div>
+  </div>
+
+  <script>
+    function goNext() {
+      window.location.href = "page2.html"; // loads next page when clicking the image
+    }
+  </script>
+</body>
+</html>
