@@ -6,8 +6,40 @@
   <title>Astra Line</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
+  <style>
+    /* Hearts animation */
+    .heart {
+      position: absolute;
+      bottom: -50px;
+      width: 20px;
+      height: 20px;
+      background-color: rgba(255, 100, 150, 0.6);
+      clip-path: polygon(50% 0%, 61% 15%, 75% 15%, 80% 25%, 75% 40%, 50% 70%, 25% 40%, 20% 25%, 25% 15%, 39% 15%);
+      animation: rise 10s linear infinite;
+    }
+
+    @keyframes rise {
+      0% { transform: translateY(0) scale(0.5); opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-120vh) scale(1); opacity: 0; }
+    }
+
+    /* Keep the card content on top */
+    body {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card {
+      position: relative;
+      z-index: 2; /* ensures card stays above hearts */
+    }
+  </style>
 </head>
 <body>
+  <!-- Hearts container -->
+  <div id="hearts"></div>
+
   <div class="card">
     <p class="invite"></p>
     <h1>I Love You</h1>
@@ -24,6 +56,19 @@
   <script>
     function goNext() {
       window.location.href = "page2.html"; // loads next page when clicking the image
+    }
+
+    // Create floating hearts
+    const heartsContainer = document.getElementById('hearts');
+    for(let i = 0; i < 30; i++){
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      const size = Math.random() * 25 + 10; // random size
+      heart.style.width = size + 'px';
+      heart.style.height = size + 'px';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (5 + Math.random() * 5) + 's';
+      heartsContainer.appendChild(heart);
     }
   </script>
 </body>

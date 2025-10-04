@@ -1,16 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Page 3</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You 💖 - Page 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+/* === Body & Container === */
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, #fbeae6, #fff3e2);
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+  color: #5a3e36;
+  overflow: hidden;
+  position: relative;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  gap: 30px;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2; /* ensure container above hearts */
+}
+
+/* === Floating Hearts === */
+.heart {
+  position: absolute;
+  bottom: -50px;
+  width: 20px;
+  height: 20px;
+  background-color: rgba(255, 100, 150, 0.6);
+  clip-path: polygon(50% 0%, 61% 15%, 75% 15%, 80% 25%, 75% 40%, 50% 70%, 25% 40%, 20% 25%, 25% 15%, 39% 15%);
+  animation: rise 10s linear infinite;
+}
+@keyframes rise {
+  0% { transform: translateY(0) scale(0.5); opacity: 0.7; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-120vh) scale(1); opacity: 0; }
+}
+
+/* === Animations === */
+@keyframes slideFadeIn { from { opacity: 0; transform: translateY(-30px);} to { opacity:1; transform: translateY(0); } }
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+@keyframes pulseCard { 0% { transform: scale(0.95);} 50% { transform: scale(1.05);} 100% { transform: scale(1);} }
+
+/* === Heading & Paragraphs === */
+h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5em;
+  color: #d47b7b;
+  margin-bottom: 8px;
+  opacity: 0;
+  animation: slideFadeIn 1s forwards;
+}
+
+p {
+  font-size: 1.1em;
+  color: #654f46;
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: fadeIn 1s forwards;
+}
+
+p:nth-of-type(1) { animation-delay: 0.5s; }
+p:nth-of-type(2) { animation-delay: 1s; }
+
+/* === Image Card === */
+.image-card {
+  background: #fffdf8;
+  border-radius: 25px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  width: 330px;
+  padding: 15px;
+  transition: transform 0.3s ease;
+  animation: pulseCard 1.2s ease-in-out;
+}
+
+.image-card:hover { transform: scale(1.05); }
+
+.image-card img {
+  width: 100%;
+  height: 330px;
+  border-radius: 20px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+/* === Cozy Buttons === */
+button {
+  background-color: #f7c8d0;
+  border: none;
+  padding: 12px 22px;
+  margin: 5px;
+  border-radius: 30px;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  font-family: 'Playfair Display', serif;
+}
+
+button:hover {
+  background-color: #f494aa;
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* === Next Button === */
+.next-btn {
+  background-color: #f7c8d0;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 30px;
+  font-size: 1.1em;
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+  font-family: 'Playfair Display', serif;
+}
+
+.next-btn:hover {
+  background-color: #f494aa;
+  box-shadow: 0 0 25px rgba(255,150,150,0.6);
+  transform: scale(1.05);
+}
+</style>
 </head>
 <body>
-  <h1>Final Page 🌟</h1>
-  <p>This page shows how to offer a file download.
-     Replace <code>image.jpg</code> with any file you want visitors to get.</p>
-  <a href="image.jpg" download class="button">Download File 📸</a>
-  <a href="index.html" class="button">Back to Start</a>
+<!-- Hearts container -->
+<div id="hearts"></div>
+
+<div class="container">
+  <h1>You Are Only Mine Baby💖</h1>
+  <p>i made this website just for you my love</p>
+  <p>here a suprise for my cutie🌸</p>
+
+  <div class="image-card">
+    <img src="IMG_20250602_131117.jpg" alt="Special Image">
+    <button id="download-btn">Download Image 💌</button>
+  </div>
+
+  <button class="next-btn" onclick="goNext()">Re-Begin ➜</button>
+</div>
+
+<script>
+// Floating hearts
+const heartsContainer = document.getElementById('hearts');
+for(let i = 0; i < 30; i++){
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  const size = Math.random() * 25 + 10;
+  heart.style.width = size + 'px';
+  heart.style.height = size + 'px';
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.animationDuration = (5 + Math.random() * 5) + 's';
+  heartsContainer.appendChild(heart);
+}
+
+// Download button
+document.getElementById('download-btn').onclick = () => {
+  const link = document.createElement('a');
+  link.href = 'WhatsApp Image 2025-10-05 at 00.31.08_b68c1351'; // replace with your image path
+  link.download = 'i love you';
+  link.click();
+}
+
+// Next button
+function goNext() {
+  window.location.href = 'index.html';
+}
+</script>
 </body>
 </html>
